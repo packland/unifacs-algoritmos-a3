@@ -54,12 +54,12 @@ Estas funções são usadas por mais de uma pessoa. A assinatura deve ser respei
 
 ### Agnaldo Júnior
 
-- [ ] Pseudocódigo de `buscar_produto` (busca sequencial pelo código)
-- [ ] Pseudocódigo de `registrar_entrada` (Regra de Entrada)
-- [ ] Pseudocódigo de `registrar_saida` (Regra de Saída + Condição de Validação de Saída)
-- [ ] Fluxograma da entrada de produtos
-- [ ] Fluxograma da saída de produtos, destacando a decisão `quantidade_saida <= quantidade_atual`
-- [ ] Texto da estratégia: como as regras de negócio e restrições evitam estoque negativo e dados inconsistentes
+- [x] Pseudocódigo de `buscar_produto` (busca sequencial pelo código)
+- [x] Pseudocódigo de `registrar_entrada` (Regra de Entrada)
+- [x] Pseudocódigo de `registrar_saida` (Regra de Saída + Condição de Validação de Saída)
+- [x] Fluxograma da entrada de produtos
+- [x] Fluxograma da saída de produtos, destacando a decisão `quantidade_saida <= quantidade_atual`
+- [x] Texto da estratégia: como as regras de negócio e restrições evitam estoque negativo e dados inconsistentes
 
 ### Patrick Silva
 
