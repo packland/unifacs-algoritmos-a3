@@ -1,0 +1,7 @@
+codigo_produto;nome_produto;categoria_produto;quantidade_atual;quantidade_minima
+101;Teclado Mecânico;Periféricos;12;5
+102;Mouse USB;Periféricos;3;10
+103;Caderno Universitário;Material Escolar;25;10
+104;Caneta Azul;Material Escolar;0;15
+105;Monitor 24 polegadas;Monitores;7;3
+106;Webcam HD;Periféricos;8;5
