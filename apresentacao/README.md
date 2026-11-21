@@ -1,6 +1,6 @@
 # Apresentação — Módulo 5
 
-Deck de slides (16:9) sobre o sistema de cadastro de produtos. Cada tela é
+Deck de slides (16:9) sobre o sistema de gestão de estoque. Cada tela é
 estática: quem apresenta decide quando passar para a próxima.
 
 ## Dois jeitos de abrir
@@ -28,6 +28,6 @@ Meet/Zoom. Aqui as setas também avançam, mas quem manda é o player.
 
 ## Arquivos
 
-- `index.html` — os 8 slides, estilos, animações e o passador do modo direto.
+- `index.html` — os 9 slides, estilos, animações e o passador do modo direto.
 - `assets/fonts/` — EB Garamond, Inter e JetBrains Mono (com as licenças OFL).
 - `vendor/` — GSAP e o runtime do HyperFrames, para funcionar offline.
