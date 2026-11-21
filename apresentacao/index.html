@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Sistema de cadastro de produtos — Módulo 5</title>
+    <script src="vendor/hyperframe.runtime.iife.js"></script>
+    <style>
+      @font-face {
+        font-family: "EB Garamond";
+        src: url("assets/fonts/EBGaramond-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "EB Garamond";
+        src: url("assets/fonts/EBGaramond-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/Inter-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/Inter-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/JetBrainsMono-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+
+      :root {
+        --cream: #faf9f5;
+        --tile: #efe9de;
+        --ink: #141413;
+        --coral: #cc785c;
+        --navy: #181715;
+        --navy-elev: #252320;
+        --line: rgba(20, 20, 19, 0.12);
+        --line-dark: rgba(250, 249, 245, 0.14);
+        --muted: rgba(20, 20, 19, 0.56);
+        --body: rgba(20, 20, 19, 0.8);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--cream);
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        padding: 64px 88px 0;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ---------- chrome ---------- */
+      .kicker {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font: 400 23px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .kicker .spike {
+        color: var(--coral);
+        font-size: 27px;
+        line-height: 1;
+      }
+      .kicker.ink-spike .spike {
+        color: var(--ink);
+      }
+
+      .title {
+        margin-top: 24px;
+        font: 400 82px/1.04 "EB Garamond", serif;
+        letter-spacing: -0.021em;
+      }
+
+      .lead {
+        margin-top: 20px;
+        max-width: 1180px;
+        font: 400 36px/1.45 "Inter", sans-serif;
+        color: var(--body);
+      }
+
+      .footer {
+        margin-top: auto;
+        flex: 0 0 64px;
+        height: 64px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font: 400 21px/1 "JetBrains Mono", monospace;
+        color: rgba(20, 20, 19, 0.55);
+        letter-spacing: 0.02em;
+      }
+      .footer .page {
+        margin-right: 220px;
+        letter-spacing: 0.12em;
+      }
+
+      .body {
+        flex: 1;
+        min-height: 0;
+        padding-top: 42px;
+      }
+
+      .coral {
+        color: var(--coral);
+      }
+
+      /* ---------- 01 cover ---------- */
+      #capa {
+        padding-top: 72px;
+      }
+      .cover {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.18fr 0.82fr;
+        gap: 86px;
+        align-items: center;
+        padding-bottom: 52px;
+      }
+      .cover-title {
+        margin-top: 34px;
+        font: 400 128px/0.98 "EB Garamond", serif;
+        letter-spacing: -0.028em;
+      }
+      .cover-lead {
+        margin-top: 32px;
+        max-width: 850px;
+        font: 400 38px/1.45 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .cover-by {
+        margin-top: 34px;
+        font: 400 22px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+
+      .csv {
+        background: var(--navy);
+        border: 1px solid var(--line-dark);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(20, 20, 19, 0.08), 0 4px 16px rgba(20, 20, 19, 0.04);
+      }
+      .csv-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 22px;
+        background: var(--navy-elev);
+        border-bottom: 1px solid var(--line-dark);
+        font: 400 19px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        color: rgba(250, 249, 245, 0.58);
+      }
+      .csv-body {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        padding: 12px 0;
+      }
+      .csv-body span {
+        padding: 11px 22px;
+        font: 400 21px/1.25 "JetBrains Mono", monospace;
+        color: rgba(250, 249, 245, 0.55);
+      }
+      .csv-body b {
+        padding: 11px 22px 11px 0;
+        font: 400 21px/1.25 "JetBrains Mono", monospace;
+        color: rgba(250, 249, 245, 0.94);
+        font-weight: 400;
+      }
+
+      /* ---------- 02 trabalho ---------- */
+      .flow {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+      }
+      .flow li {
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+        min-width: 0;
+      }
+      .flow .n {
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+      .flow b {
+        display: block;
+        margin-top: 10px;
+        font: 400 38px/1.1 "EB Garamond", serif;
+        font-weight: 400;
+      }
+      .flow small {
+        display: block;
+        margin-top: 8px;
+        font: 400 18px/1.2 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .team {
+        width: 100%;
+        margin-top: 42px;
+        border-collapse: collapse;
+      }
+      .team th {
+        padding: 0 0 10px;
+        text-align: left;
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .team td {
+        padding: 17px 0;
+        border-top: 1px solid var(--line);
+        font: 400 31px/1.25 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .team td:first-child {
+        width: 45%;
+        color: var(--ink);
+      }
+
+      .bridge {
+        margin-top: 40px;
+        font: 400 34px/1.35 "EB Garamond", serif;
+      }
+
+      /* ---------- 03 promessa ---------- */
+      .promise {
+        display: flex;
+        gap: 72px;
+      }
+      .ops {
+        flex: 1;
+        border-collapse: collapse;
+      }
+      .ops td {
+        padding: 17px 0;
+        border-top: 1px solid var(--line);
+        vertical-align: top;
+      }
+      .ops tr:last-child td {
+        border-bottom: 1px solid var(--line);
+      }
+      .ops .op {
+        width: 320px;
+        font: 400 26px/1.3 "JetBrains Mono", monospace;
+        white-space: nowrap;
+      }
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.86em;
+      }
+      .ops .desc {
+        font: 400 32px/1.35 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .promise-side {
+        flex: 0 0 440px;
+        padding-top: 4px;
+      }
+      .promise-side .big {
+        font: 400 54px/1.1 "EB Garamond", serif;
+        letter-spacing: -0.018em;
+      }
+      .rules {
+        list-style: none;
+        margin-top: 30px;
+      }
+      .rules li {
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+        font: 400 26px/1.35 "Inter", sans-serif;
+        color: var(--body);
+      }
+
+      /* ---------- 04 erros ---------- */
+      .errs {
+        padding-top: 26px;
+      }
+      .err {
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        gap: 24px;
+        padding: 18px 0 16px;
+        border-top: 1px solid var(--line);
+      }
+      .err .idx {
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        padding-top: 8px;
+      }
+      .err h3 {
+        font: 400 40px/1.15 "EB Garamond", serif;
+        font-weight: 400;
+      }
+      .err .mono {
+        margin-top: 8px;
+        font: 400 25px/1.45 "JetBrains Mono", monospace;
+        color: var(--body);
+      }
+      .err .res {
+        margin-top: 6px;
+        font: 400 27px/1.35 "Inter", sans-serif;
+        color: var(--muted);
+      }
+      .thesis {
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        font: 400 36px/1.35 "EB Garamond", serif;
+      }
+      .thesis b {
+        font-weight: 400;
+        color: var(--ink);
+      }
+
+      /* ---------- 05 fluxo ---------- */
+      .steps {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 22px;
+      }
+      .steps li {
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+      }
+      .steps .n {
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+      .steps b {
+        display: block;
+        margin-top: 10px;
+        font: 400 36px/1.1 "EB Garamond", serif;
+        font-weight: 400;
+      }
+      .steps small {
+        display: block;
+        margin-top: 8px;
+        font: 400 22px/1.35 "Inter", sans-serif;
+        color: var(--muted);
+      }
+      .checkline {
+        margin-top: 30px;
+        font: 400 24px/1.45 "JetBrains Mono", monospace;
+        color: var(--body);
+      }
+
+      #fluxo .body {
+        display: flex;
+        flex-direction: column;
+      }
+      .lower {
+        margin-top: 70px;
+        display: grid;
+        grid-template-columns: 1fr 950px;
+        gap: 64px;
+        align-items: start;
+      }
+      .removal .label {
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .chain {
+        margin-top: 20px;
+        font: 400 38px/1.3 "EB Garamond", serif;
+      }
+      .chain .arr {
+        color: var(--muted);
+        padding: 0 6px;
+      }
+      .note {
+        margin-top: 18px;
+        font: 400 26px/1.45 "Inter", sans-serif;
+        color: var(--body);
+        max-width: 560px;
+      }
+
+      .code {
+        background: var(--navy);
+        border: 1px solid var(--line-dark);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .code-bar {
+        padding: 13px 20px;
+        background: var(--navy-elev);
+        border-bottom: 1px solid var(--line-dark);
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.05em;
+        color: rgba(250, 249, 245, 0.56);
+      }
+      .code pre {
+        margin: 0;
+        padding: 22px 24px 24px;
+        font: 400 25px/1.62 "JetBrains Mono", monospace;
+        color: rgba(250, 249, 245, 0.93);
+        white-space: pre;
+      }
+      .code .dim {
+        color: rgba(250, 249, 245, 0.48);
+      }
+      .code .kw {
+        color: var(--coral);
+      }
+
+      /* ---------- 06 motivo ---------- */
+      .why {
+        display: grid;
+        grid-template-columns: 1fr 460px;
+        gap: 76px;
+      }
+      .reasons {
+        list-style: none;
+      }
+      .reasons li {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 28px;
+        padding: 46px 0;
+        border-top: 1px solid var(--line);
+      }
+      .reasons b {
+        font: 400 29px/1.2 "Inter", sans-serif;
+        font-weight: 700;
+      }
+      .reasons span {
+        font: 400 27px/1.5 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .quote {
+        border-left: 1px solid var(--line);
+        padding-left: 34px;
+        align-self: center;
+      }
+      .quote p {
+        font: 400 54px/1.12 "EB Garamond", serif;
+        font-style: italic;
+        letter-spacing: -0.012em;
+      }
+      .quote cite {
+        display: block;
+        margin-top: 22px;
+        font: 400 18px/1.2 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-style: normal;
+      }
+
+      /* ---------- 07 custos ---------- */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--line);
+      }
+      .stat {
+        padding: 22px 26px 20px 0;
+        border-right: 1px solid var(--line);
+      }
+      .stat:last-child {
+        border-right: 0;
+      }
+      .stat .fig {
+        font: 400 84px/1 "EB Garamond", serif;
+        letter-spacing: -0.03em;
+      }
+      .stat .unit {
+        display: block;
+        margin-top: 8px;
+        font: 400 17px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .stat .cap {
+        margin-top: 10px;
+        font: 400 23px/1.35 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .legend {
+        margin-top: 14px;
+        font: 400 21px/1.4 "JetBrains Mono", monospace;
+        color: var(--muted);
+      }
+      .costs {
+        margin-top: 26px;
+        columns: 2;
+        column-gap: 64px;
+        list-style: none;
+      }
+      .costs li {
+        break-inside: avoid;
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 18px;
+        font: 400 27px/1.45 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .costs li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 17px;
+        width: 10px;
+        height: 1px;
+        background: rgba(20, 20, 19, 0.35);
+      }
+      .closing {
+        margin-top: 34px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        font: 400 38px/1.3 "EB Garamond", serif;
+      }
+
+      /* ---------- 08 entrega ---------- */
+      .ready {
+        list-style: none;
+      }
+      .ready li {
+        position: relative;
+        padding-left: 24px;
+        margin-bottom: 21px;
+        font: 400 32px/1.4 "Inter", sans-serif;
+        color: var(--body);
+      }
+      .ready li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 19px;
+        width: 12px;
+        height: 1px;
+        background: var(--ink);
+      }
+      .handoff {
+        width: 100%;
+        margin-top: 42px;
+        border-collapse: collapse;
+      }
+      .handoff th {
+        padding: 0 0 10px;
+        text-align: left;
+        font: 400 18px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .handoff td {
+        padding: 26px 0;
+        border-top: 1px solid var(--line);
+        font: 400 31px/1.25 "Inter", sans-serif;
+      }
+      .handoff td:last-child {
+        text-align: right;
+        font: 400 23px/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+      .handoff .next {
+        color: var(--coral);
+      }
+      .handoff .done {
+        color: var(--ink);
+      }
+      .after {
+        margin-top: 34px;
+        font: 400 38px/1.3 "EB Garamond", serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Ilha do deck: cenas, builds e notas do apresentador. O `hyperframes present` lê este bloco. -->
+    <script type="application/hyperframes-slideshow+json">
+      {
+        "slides": [
+          {
+            "sceneId": "capa",
+            "notes": "Abrir dizendo que o trabalho é um sistema de controle de estoque e que esta parte é a base: guardar os dados e cadastrar produtos. Não adiantar as partes dos colegas."
+          },
+          {
+            "sceneId": "trabalho",
+            "notes": "Contextualizar em 30 segundos: o sistema guarda, movimenta, consulta e relata. Apontar os módulos no fluxo e dizer que o seu é o 5. Se perguntarem por que CSV, responder que é o formato combinado pelo grupo e que evita instalar dependência."
+          },
+          {
+            "sceneId": "promessa",
+            "notes": "O contrato é comportamento, não assinatura. Pergunta provável: 'isso não é só a assinatura do contrato?' Resposta: o contrato descreve o comportamento; a classe Estoque é a implementação. A promessa central é 'se algo der errado, nada muda'."
+          },
+          {
+            "sceneId": "erros",
+            "fragments": [99, 108],
+            "notes": "Mostrar os dois jeitos de falhar: False com o estado intacto e erro alto quando o arquivo está corrompido. Pergunta provável: 'e se o CSV estiver corrompido?' Resposta: o programa para antes de gravar; não escolhe um vencedor silencioso. Cada avanço revela uma classe de erro."
+          },
+          {
+            "sceneId": "fluxo",
+            "notes": "Seguir o caminho do cadastro e depois o da remoção. Pergunta provável: 'por que não salvar a cada linha?' Resposta: evitaria estado parcial no arquivo, mas faria mais operações de disco; salvar uma vez no fim é suficiente para 100 produtos."
+          },
+          {
+            "sceneId": "motivo",
+            "notes": "Perguntas prováveis: 'por que não SQLite?' — limite de 100 produtos e zero dependência; SQLite entra quando houver concorrência. 'Por que dict se o contrato fala em vetor?' — a property produtos devolve a lista; o dict garante a chave única."
+          },
+          {
+            "sceneId": "custos",
+            "notes": "Ser honesto sobre o preço: reescrever o arquivo inteiro, sem escrita atômica e sem concorrência. Com 100 produtos isso não pesa. Próximo passo técnico: gravar em um arquivo temporário e substituir no fim."
+          },
+          {
+            "sceneId": "entrega",
+            "notes": "Passar a palavra. Não dizer 'obrigado' nem fechar o assunto: a tela fica em 'por vir' enquanto Agnaldo se prepara. Depois dele, Patrick fecha com consultas e relatórios."
+          }
+        ]
+      }
+    </script>
+
+    <div
+      id="root"
+      data-composition-id="main"
+      data-root="true"
+      data-start="0"
+      data-duration="240"
+      data-width="1920"
+      data-height="1080"
+    >
+    <!-- 01 · capa -->
+    <section
+      class="clip slide"
+      id="capa"
+      data-composition-id="capa"
+      data-label="Capa"
+      data-start="0"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="cover">
+        <div>
+          <p class="kicker anim"><span class="spike">✱</span> Módulo 5 · Guardar os dados</p>
+          <h1 class="cover-title anim">Sistema de<br />cadastro de<br />produtos</h1>
+          <p class="cover-lead anim">
+            Como os produtos ficam guardados na memória, como são salvos no arquivo e o que
+            acontece quando algo dá errado.
+          </p>
+          <p class="cover-by anim">Eduardo Santos do Nascimento</p>
+        </div>
+
+        <aside class="csv anim" aria-label="Exemplo de produto guardado no arquivo CSV">
+          <div class="csv-bar"><span>dados/produtos.csv</span><span>produto 101</span></div>
+          <div class="csv-body">
+            <span>codigo_produto</span><b>101</b>
+            <span>nome_produto</span><b>Teclado Mecânico</b>
+            <span>categoria_produto</span><b>Periféricos</b>
+            <span>quantidade_atual</span><b>12</b>
+            <span>quantidade_minima</span><b>5</b>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">01 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 02 · o trabalho -->
+    <section
+      class="clip slide"
+      id="trabalho"
+      data-composition-id="trabalho"
+      data-label="O trabalho"
+      data-start="30"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker ink-spike anim"><span class="spike">✱</span> O trabalho</p>
+        <h2 class="title anim">Um sistema de controle de estoque</h2>
+        <p class="lead anim">
+          O programa guarda produtos, registra entradas e saídas e mostra um relatório de estoque
+          baixo. Tudo em Python, com os dados num arquivo CSV.
+        </p>
+      </header>
+
+      <div class="body">
+        <ol class="flow anim">
+          <li><span class="n">01</span><b>Cadastrar</b><small>Módulo 1</small></li>
+          <li><span class="n">02</span><b>Movimentar</b><small>Módulo 2</small></li>
+          <li><span class="n">03</span><b>Consultar</b><small>Módulo 3</small></li>
+          <li><span class="n">04</span><b>Relatório</b><small>Módulo 4</small></li>
+        </ol>
+
+        <table class="team anim">
+          <thead>
+            <tr><th>Integrante</th><th>Ficou com</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Eduardo Santos do Nascimento</td>
+              <td>Menu, cadastro, remoção e o arquivo CSV</td>
+            </tr>
+            <tr>
+              <td>Agnaldo Júnior</td>
+              <td>Registrar entrada e saída, conferindo o saldo</td>
+            </tr>
+            <tr>
+              <td>Patrick Silva</td>
+              <td>Listar, consultar e relatório de estoque baixo</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="bridge anim">Esta parte é o <span class="coral">Módulo 5</span>: guardar os dados e cadastrar produtos.</p>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">02 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 03 · promessa -->
+    <section
+      class="clip slide"
+      id="promessa"
+      data-composition-id="promessa"
+      data-label="O que o módulo promete"
+      data-start="60"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker anim"><span class="spike">✱</span> O que o módulo promete</p>
+        <h2 class="title anim">Cinco operações, uma promessa</h2>
+      </header>
+
+      <div class="body promise">
+        <table class="ops anim">
+          <tbody>
+            <tr>
+              <td class="op">carregar()</td>
+              <td class="desc">Lê o arquivo e monta a lista de produtos na memória</td>
+            </tr>
+            <tr>
+              <td class="op">salvar()</td>
+              <td class="desc">Grava todos os produtos no arquivo de uma vez</td>
+            </tr>
+            <tr>
+              <td class="op">buscar(código)</td>
+              <td class="desc">Devolve o produto, ou <code>None</code> se ele não existir</td>
+            </tr>
+            <tr>
+              <td class="op">adicionar(produto)</td>
+              <td class="desc">Guarda o produto se o código ainda não estiver usado</td>
+            </tr>
+            <tr>
+              <td class="op">remover(código)</td>
+              <td class="desc">Tira o produto pelo código</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="promise-side anim">
+          <p class="big">Se alguma coisa der errado, nada muda.</p>
+          <ul class="rules">
+            <li>O código é maior que zero e não pode repetir.</li>
+            <li>Nome e categoria são obrigatórios e não podem ter <code>;</code>.</li>
+            <li>As quantidades não podem ser negativas.</li>
+            <li>O sistema aceita no máximo 100 produtos.</li>
+          </ul>
+        </aside>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">03 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 04 · erros -->
+    <section
+      class="clip slide"
+      id="erros"
+      data-composition-id="erros"
+      data-label="Quando algo dá errado"
+      data-start="90"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker anim"><span class="spike">✱</span> Quando dá errado</p>
+        <h2 class="title anim">Quando algo dá errado</h2>
+      </header>
+
+      <div class="body errs">
+        <div class="err blk1">
+          <span class="idx">01</span>
+          <div>
+            <h3>A pessoa digitou algo inválido</h3>
+            <p class="mono">Código inválido · Quantidade inválida · Nome do produto inválido</p>
+            <p class="res">O sistema avisa e não altera nada.</p>
+          </div>
+        </div>
+
+        <div class="err blk2">
+          <span class="idx">02</span>
+          <div>
+            <h3>O produto não pode entrar ou sair</h3>
+            <p class="mono">Produto já cadastrado · Produto não encontrado · Limite de produtos atingido</p>
+            <p class="res">O sistema avisa e não altera nada.</p>
+          </div>
+        </div>
+
+        <div class="err blk3">
+          <span class="idx">03</span>
+          <div>
+            <h3>O arquivo está corrompido</h3>
+            <p class="mono">Código repetido no CSV (ValueError) · linha malformada</p>
+            <p class="res">O programa para com erro e não grava por cima.</p>
+          </div>
+        </div>
+
+        <p class="thesis anim">
+          A ordem das checagens existe para isso: <b>só grava depois que tudo passou.</b>
+        </p>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">04 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 05 · fluxo -->
+    <section
+      class="clip slide"
+      id="fluxo"
+      data-composition-id="fluxo"
+      data-label="Como funciona"
+      data-start="120"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker anim"><span class="spike">✱</span> Como funciona</p>
+        <h2 class="title anim">Do menu ao arquivo</h2>
+      </header>
+
+      <div class="body">
+        <ol class="steps anim">
+          <li><span class="n">01</span><b>Menu</b><small>escolhe Cadastrar</small></li>
+          <li><span class="n">02</span><b>Valida</b><small>confere os dados</small></li>
+          <li><span class="n">03</span><b>Guarda</b><small>no dicionário, pelo código</small></li>
+          <li><span class="n">04</span><b>Salva</b><small>reescreve o arquivo</small></li>
+          <li><span class="n">05</span><b>Confirma</b><small>mostra a mensagem</small></li>
+        </ol>
+
+        <p class="checkline anim">
+          A validação confere, nesta ordem: limite · código · repetição · nome · categoria ·
+          quantidades.
+        </p>
+
+        <div class="lower">
+          <div class="removal anim">
+            <p class="label">Remoção</p>
+            <p class="chain">procura <span class="arr">→</span> confirma <span class="arr">→</span> tira <span class="arr">→</span> salva</p>
+            <p class="note">
+              A confirmação é s/n. Se a pessoa cancelar, o produto continua no estoque e o arquivo
+              não é tocado.
+            </p>
+          </div>
+
+          <div class="code anim">
+            <div class="code-bar">src/armazenamento.py</div>
+            <pre><span class="kw">def</span> buscar(self, codigo):
+    <span class="kw">return</span> self.__produtos.get(codigo)
+
+<span class="kw">def</span> remover(self, codigo):
+    <span class="kw">return</span> self.__produtos.pop(codigo, <span class="dim">None</span>) <span class="kw">is not None</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">05 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 06 · motivo -->
+    <section
+      class="clip slide"
+      id="motivo"
+      data-composition-id="motivo"
+      data-label="Por que assim"
+      data-start="150"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker anim"><span class="spike">✱</span> Por que assim</p>
+        <h2 class="title anim">Por que usei um dicionário</h2>
+      </header>
+
+      <div class="body why">
+        <ul class="reasons anim">
+          <li>
+            <b>Dicionário, não lista</b>
+            <span>Acha e remove pelo código sem varrer tudo, e o código não fica repetido.</span>
+          </li>
+          <li>
+            <b>CSV, não banco</b>
+            <span>É simples, dá para abrir e ler, e não precisa instalar nada.</span>
+          </li>
+          <li>
+            <b>Ler uma vez, ao abrir</b>
+            <span>Lê o disco menos vezes e todos trabalham sobre os mesmos dados.</span>
+          </li>
+          <li>
+            <b>Classe Estoque no meio</b>
+            <span>O menu não precisa saber que existe um CSV por trás.</span>
+          </li>
+        </ul>
+
+        <aside class="quote anim">
+          <p>“O código do produto já é a chave.”</p>
+          <cite>Módulo 5 · persistência</cite>
+        </aside>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">06 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 07 · custos -->
+    <section
+      class="clip slide"
+      id="custos"
+      data-composition-id="custos"
+      data-label="O que ganhei e o que perdi"
+      data-start="180"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker anim"><span class="spike">✱</span> O que ganhei e o que perdi</p>
+        <h2 class="title anim">O preço de escolher simples</h2>
+      </header>
+
+      <div class="body">
+        <div class="stats anim">
+          <div class="stat">
+            <div class="fig">O(1)</div>
+            <span class="unit">buscar</span>
+            <p class="cap">Não depende da quantidade de produtos.</p>
+          </div>
+          <div class="stat">
+            <div class="fig">O(1)</div>
+            <span class="unit">remover</span>
+            <p class="cap">Também vai direto pelo código.</p>
+          </div>
+          <div class="stat">
+            <div class="fig">O(n)</div>
+            <span class="unit">salvar</span>
+            <p class="cap">Reescreve todos os produtos.</p>
+          </div>
+          <div class="stat">
+            <div class="fig">O(n)</div>
+            <span class="unit">carregar</span>
+            <p class="cap">Lê todos na abertura.</p>
+          </div>
+        </div>
+        <p class="legend anim">O(1): tempo constante. O(n): cresce com a quantidade de produtos.</p>
+
+        <ul class="costs anim">
+          <li>Toda alteração regrava o arquivo inteiro.</li>
+          <li>Se o programa fechar no meio, o arquivo pode ficar pela metade.</li>
+          <li>O programa não percebe se outra pessoa editar o arquivo.</li>
+          <li>A lista que os colegas recebem é uma cópia: mudar nela não muda o estoque.</li>
+          <li>Um arquivo corrompido faz o programa parar, em vez de seguir com dados errados.</li>
+        </ul>
+
+        <p class="closing anim">
+          Com 100 produtos, regravar tudo é barato. Com milhões, precisaria de um banco de dados.
+        </p>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">07 — 08</span>
+      </footer>
+    </section>
+
+    <!-- 08 · entrega -->
+    <section
+      class="clip slide"
+      id="entrega"
+      data-composition-id="entrega"
+      data-label="Entrega e continuidade"
+      data-start="210"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <header>
+        <p class="kicker ink-spike anim"><span class="spike">✱</span> Entrega</p>
+        <h2 class="title anim">O que eu entrego — e o que vem depois</h2>
+      </header>
+
+      <div class="body">
+        <ul class="ready anim">
+          <li>Os produtos ficam iguais na memória e no arquivo.</li>
+          <li>As outras partes recebem a lista pronta e usam o mesmo estoque.</li>
+          <li>Toda operação responde certo ou errado; quando erra, nada muda.</li>
+        </ul>
+
+        <table class="handoff anim">
+          <thead>
+            <tr><th>Módulo</th><th>Responsável</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5 · Guardar os dados e cadastrar</td>
+              <td>Eduardo</td>
+              <td class="done">pronto</td>
+            </tr>
+            <tr>
+              <td>2 · Movimentações</td>
+              <td>Agnaldo</td>
+              <td class="next">por vir</td>
+            </tr>
+            <tr>
+              <td>3–4 · Consultas e relatórios</td>
+              <td>Patrick</td>
+              <td class="next">por vir</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="after anim">A apresentação continua com os módulos 2, 3 e 4.</p>
+      </div>
+
+      <footer class="footer">
+        <span>Eduardo Santos do Nascimento · Agnaldo Júnior · Patrick Silva</span>
+        <span class="page">08 — 08</span>
+      </footer>
+    </section>
+
+    </div>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script>
+      // Cada cena tem a sua própria linha do tempo, em tempo local.
+      // O player pausa e busca; por isso nada aqui depende de relógio ou de eventos.
+      const fade = (tl, selector, at, stagger = 0.06) => {
+        tl.fromTo(
+          selector,
+          { opacity: 0, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            ease: "power2.out",
+            stagger,
+          },
+          at,
+        );
+      };
+
+      const scenes = {
+        capa: (tl) => {
+          fade(tl, "#capa .anim", 0);
+        },
+        trabalho: (tl) => {
+          fade(tl, "#trabalho .anim", 0);
+        },
+        promessa: (tl) => {
+          fade(tl, "#promessa .anim", 0);
+        },
+        erros: (tl) => {
+          fade(tl, "#erros .blk1", 0.15, 0);
+          fade(tl, "#erros .blk2", 8, 0);
+          fade(tl, "#erros .blk3", 16, 0);
+          fade(tl, "#erros .thesis", 0.45, 0);
+        },
+        fluxo: (tl) => {
+          fade(tl, "#fluxo .anim", 0);
+        },
+        motivo: (tl) => {
+          fade(tl, "#motivo .anim", 0);
+        },
+        custos: (tl) => {
+          fade(tl, "#custos .anim", 0);
+        },
+        entrega: (tl) => {
+          fade(tl, "#entrega .anim", 0);
+        },
+      };
+
+      for (const [id, build] of Object.entries(scenes)) {
+        const tl = gsap.timeline({ paused: true });
+        build(tl);
+        window.__timelines = window.__timelines || {};
+        window.__timelines[id] = tl;
+      }
+    </script>
+  </body>
+</html>
