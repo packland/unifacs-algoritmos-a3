@@ -14,6 +14,8 @@ def main():
         print("\n===== CONTROLE DE ESTOQUE =====")
         print("1 - Cadastrar produto")
         print("2 - Remover produto")
+        print("3 - Registrar entrada")
+        print("4 - Registrar saída")
         print("0 - Sair")
         opcao = input("Escolha uma opção: ").strip()
         match opcao:
@@ -24,6 +26,10 @@ def main():
                 estoque.cadastrar_produto()
             case "2":
                 estoque.remover_produto()
+            case "3":
+                estoque.registrar_entrada()
+            case "4":
+                estoque.registrar_saida()
             case _:
                 print("Opção inválida. Tente novamente.")
 

@@ -3,6 +3,14 @@ from produto import Produto
 MAX_PRODUTOS = 100
 
 
+def buscar_produto(produtos, codigo):
+    # busca sequencial do contrato; em Python -1 também é índice válido, então quem chama deve testar == -1
+    for i in range(len(produtos)):
+        if produtos[i].codigo_produto == codigo:
+            return i
+    return -1
+
+
 class Estoque:
     def __init__(self, armazenamento):
         self.__armazenamento = armazenamento
@@ -85,4 +93,70 @@ class Estoque:
         self.__armazenamento.remover(codigo)
         self.__armazenamento.salvar()
         print("Produto removido com sucesso")
+        return True
+
+    def registrar_entrada(self):
+        produtos = self.__armazenamento.produtos
+        try:
+            codigo_produto = int(input("Código do produto: "))
+        except (ValueError, EOFError):
+            print("Código inválido")
+            return False
+
+        posicao = buscar_produto(produtos, codigo_produto)
+        if posicao == -1:
+            print("Produto não encontrado")
+            return False
+
+        try:
+            quantidade_entrada = int(input("Quantidade de entrada: "))
+        except (ValueError, EOFError):
+            print("Quantidade inválida")
+            return False
+
+        if quantidade_entrada <= 0:
+            print("Quantidade inválida")
+            return False
+
+        produto = produtos[posicao]
+        produto.quantidade_atual += quantidade_entrada
+        self.__armazenamento.salvar()
+        print("Entrada registrada com sucesso")
+        # shortcut: mostra só o saldo; trocar por exibir_produto(produto) quando o Patrick entregar
+        print(f"Saldo atual de {produto.nome_produto}: {produto.quantidade_atual}")
+        return True
+
+    def registrar_saida(self):
+        produtos = self.__armazenamento.produtos
+        try:
+            codigo_produto = int(input("Código do produto: "))
+        except (ValueError, EOFError):
+            print("Código inválido")
+            return False
+
+        posicao = buscar_produto(produtos, codigo_produto)
+        if posicao == -1:
+            print("Produto não encontrado")
+            return False
+
+        try:
+            quantidade_saida = int(input("Quantidade de saída: "))
+        except (ValueError, EOFError):
+            print("Quantidade inválida")
+            return False
+
+        if quantidade_saida <= 0:
+            print("Quantidade inválida")
+            return False
+
+        produto = produtos[posicao]
+        if quantidade_saida > produto.quantidade_atual:
+            print("Quantidade insuficiente para esta saída")
+            return False
+
+        produto.quantidade_atual -= quantidade_saida
+        self.__armazenamento.salvar()
+        print("Saída registrada com sucesso")
+        # shortcut: mostra só o saldo; trocar por exibir_produto(produto) quando o Patrick entregar
+        print(f"Saldo atual de {produto.nome_produto}: {produto.quantidade_atual}")
         return True
