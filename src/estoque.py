@@ -1,3 +1,4 @@
+from consultas import exibir_produto
 from produto import Produto
 
 MAX_PRODUTOS = 100
@@ -17,6 +18,10 @@ class Estoque:
 
     def carregar_produtos(self):
         self.__armazenamento.carregar()
+
+    @property
+    def produtos(self):
+        return self.__armazenamento.produtos
 
     def cadastrar_produto(self):
         if len(self.__armazenamento.produtos) >= MAX_PRODUTOS:
@@ -122,8 +127,7 @@ class Estoque:
         produto.quantidade_atual += quantidade_entrada
         self.__armazenamento.salvar()
         print("Entrada registrada com sucesso")
-        # shortcut: mostra só o saldo; trocar por exibir_produto(produto) quando o Patrick entregar
-        print(f"Saldo atual de {produto.nome_produto}: {produto.quantidade_atual}")
+        exibir_produto(produto)
         return True
 
     def registrar_saida(self):
@@ -157,6 +161,5 @@ class Estoque:
         produto.quantidade_atual -= quantidade_saida
         self.__armazenamento.salvar()
         print("Saída registrada com sucesso")
-        # shortcut: mostra só o saldo; trocar por exibir_produto(produto) quando o Patrick entregar
-        print(f"Saldo atual de {produto.nome_produto}: {produto.quantidade_atual}")
+        exibir_produto(produto)
         return True

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from armazenamento import ArmazenamentoCSV
+from consultas import consultar_produto, listar_produtos, relatorio_estoque_baixo
 from estoque import Estoque
 
 ARQUIVO_CSV = Path(__file__).resolve().parent.parent / "dados" / "produtos.csv"
@@ -16,6 +17,9 @@ def main():
         print("2 - Remover produto")
         print("3 - Registrar entrada")
         print("4 - Registrar saída")
+        print("5 - Listar produtos")
+        print("6 - Consultar produto")
+        print("7 - Relatório de estoque baixo")
         print("0 - Sair")
         opcao = input("Escolha uma opção: ").strip()
         match opcao:
@@ -30,6 +34,12 @@ def main():
                 estoque.registrar_entrada()
             case "4":
                 estoque.registrar_saida()
+            case "5":
+                listar_produtos(estoque.produtos)
+            case "6":
+                consultar_produto(estoque.produtos)
+            case "7":
+                relatorio_estoque_baixo(estoque.produtos)
             case _:
                 print("Opção inválida. Tente novamente.")
 
