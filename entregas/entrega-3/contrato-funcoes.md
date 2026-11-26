@@ -1,6 +1,6 @@
 # Contrato das funções
 
-Assinaturas combinadas na [divisão de tarefas](../../docs/entrega-3-divisao-de-tarefas.md). Quem for implementar deve respeitar nome, parâmetros e retorno, porque o programa principal e os outros módulos já chamam assim.
+Assinaturas combinadas na [divisão de tarefas](entrega-3-divisao-de-tarefas.md). Quem for implementar deve respeitar nome, parâmetros e retorno, porque o programa principal e os outros módulos já chamam assim.
 
 Todas as funções recebem o mesmo vetor `produtos` (vetor de `Produto`, conforme a Entrega 2). Nenhuma delas grava no CSV: a gravação é feita pelo programa principal com `salvar_produtos`, e só quando a operação retorna `verdadeiro`.
 

@@ -1,23 +1,39 @@
-# RELATÓRIO FINAL DO TRABALHO DA DISCIPLINA
+<div class="capa">
 
-**Universidade Salvador - UNIFACS**
-**Algoritmo e Programação 2026.2**
-**Professores:** Enderson Nobre e Robson Conceição
+<p class="logo"><img src="logo_facs.png" alt="UNIFACS" /></p>
 
-**Equipe:**
-- Eduardo Santos do Nascimento — RA 12724145221
-- Agnaldo Cândido de Almeida Júnior — RA 12723213093
-- Patrick Silva — RA (pendente)
+<p class="inst">UNIVERSIDADE SALVADOR – UNIFACS</p>
 
----
+<p class="curso">Algoritmo e Programação 2026.2</p>
 
-## 1. Introdução
+<p class="titulo">SISTEMA DE CONTROLE DE ESTOQUE</p>
+
+<p class="autores">Eduardo Santos do Nascimento — RA 12724145221<br />
+Agnaldo Cândido de Almeida Júnior — RA 12723213093<br />
+Patrick Silva — RA 1272627630</p>
+
+<p class="local">Salvador<br />
+2026</p>
+
+</div>
+
+<div class="resumo">
+
+<h2 class="pre">RESUMO</h2>
+
+Este trabalho descreve o desenvolvimento de um sistema de controle de estoque em Python, executado em terminal, para o cadastro de produtos e o registro de movimentações. O problema tratado é o controle manual, sujeito a divergências entre a quantidade registrada e a disponível. A solução foi planejada em etapas de definição, modelagem e algoritmo, e implementada com orientação a objetos, validação de dados e persistência em arquivo CSV. O programa permite cadastrar, remover, listar e consultar produtos, registrar entradas e saídas, bloquear saídas maiores que o saldo e emitir relatório de estoque baixo. Os testes realizados cobriram cenários normais, alternativos e excepcionais e confirmaram que as operações inválidas não alteram os dados nem regravam o arquivo. Conclui-se que os objetivos propostos foram alcançados no escopo da disciplina, com limitações conhecidas e melhorias indicadas para trabalhos futuros.
+
+**Palavras-chave:** controle de estoque; algoritmos; programação em Python; persistência em arquivo.
+
+</div>
+
+## 1 Introdução
 
 O projeto apresenta um **Sistema de Controle de Estoque** para empresas que compram, armazenam e vendem produtos. A área de aplicação é a gestão de estoque de pequenos e médios negócios (varejo de periféricos de informática e material escolar, por exemplo), em que o controle ainda costuma ser feito por anotações ou planilhas não integradas.
 
 A solução é um programa em Python, executado em terminal, que cadastra produtos, registra entradas e saídas, consulta itens e emite um relatório de produtos com estoque baixo. Os dados ficam gravados em um arquivo CSV e permanecem disponíveis após o encerramento do programa.
 
-## 2. Descrição do problema
+## 2 Descrição do problema
 
 **Cenário:** o controle manual de estoque gera divergência entre a quantidade registrada e a real, perda de produtos, dificuldade de identificar itens em falta e demora na atualização das informações.
 
@@ -29,7 +45,7 @@ A solução é um programa em Python, executado em terminal, que cadastra produt
 
 **Resultados esperados:** lista de produtos com a quantidade disponível, confirmação das movimentações, aviso de saldo insuficiente e indicação dos produtos abaixo do mínimo.
 
-## 3. Justificativa
+## 3 Justificativa
 
 Um controle informatizado torna o gerenciamento mais rápido, seguro e rastreável. Os benefícios esperados são:
 
@@ -40,7 +56,7 @@ Um controle informatizado torna o gerenciamento mais rápido, seguro e rastreáv
 
 Do ponto de vista acadêmico, o problema é adequado para aplicar variáveis, estruturas condicionais e de repetição, vetores/coleções, modularização, arquivos, tratamento de erros e POO.
 
-## 4. Objetivos
+## 4 Objetivos
 
 **Objetivo geral:** desenvolver um sistema computacional para controle de estoque, permitindo cadastro, consulta e atualização das quantidades por meio de entradas e saídas.
 
@@ -53,9 +69,11 @@ Do ponto de vista acadêmico, o problema é adequado para aplicar variáveis, es
 - identificar e exibir produtos com estoque baixo;
 - persistir os dados em arquivo CSV.
 
-## 5. Requisitos e regras da solução
+## 5 Requisitos e regras da solução
 
 ### 5.1 Requisitos funcionais
+
+<p class="legenda">Tabela 1 – Requisitos funcionais do sistema</p>
 
 | Código | Requisito |
 |---|---|
@@ -67,6 +85,8 @@ Do ponto de vista acadêmico, o problema é adequado para aplicar variáveis, es
 | RF06 | Consultar produto por código ou por nome. |
 | RF07 | Emitir relatório de estoque baixo. |
 | RF08 | Carregar os dados do CSV ao iniciar e gravar após cada alteração. |
+
+<p class="fonte">Fonte: elaborada pelos autores.</p>
 
 ### 5.2 Regras de negócio
 
@@ -83,9 +103,11 @@ Do ponto de vista acadêmico, o problema é adequado para aplicar variáveis, es
 - Limite de 100 produtos (`MAX_PRODUTOS`).
 - Operação inválida não altera os dados nem regrava o CSV.
 
-## 6. Decomposição do problema
+## 6 Decomposição do problema
 
 O problema principal (controlar o estoque) foi dividido em módulos menores, definidos na Entrega 2 e distribuídos na Entrega 3:
+
+<p class="legenda">Tabela 2 – Divisão do problema em módulos</p>
 
 | Módulo | Tarefas | Implementação |
 |---|---|---|
@@ -96,9 +118,13 @@ O problema principal (controlar o estoque) foi dividido em módulos menores, def
 | Módulo 4 – Relatórios | Varrer a lista e filtrar estoque baixo. | `relatorio_estoque_baixo` |
 | Módulo 5 – Persistência | Ler e gravar o CSV. | `ArmazenamentoCSV` |
 
-## 7. Modelagem da solução
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
+## 7 Modelagem da solução
 
 **Entradas → Dados/Variáveis → Regras/Condições → Processamento → Saídas**
+
+<p class="legenda">Tabela 3 – Modelagem: entradas, dados, regras, processamento e saídas</p>
 
 | Etapa | Descrição |
 |---|---|
@@ -108,9 +134,11 @@ O problema principal (controlar o estoque) foi dividido em módulos menores, def
 | **Processamento** | Carregar CSV, validar, buscar, somar/subtrair quantidades, comparar com o mínimo, gravar CSV. |
 | **Saídas** | Mensagens de confirmação ou erro, dados do produto com status, lista completa, relatório de estoque baixo, CSV atualizado. |
 
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
 **Relações:** a entidade `Produto` é identificada por `codigo_produto`; a coleção de produtos é a base de todas as operações.
 
-## 8. Algoritmo proposto
+## 8 Algoritmo proposto
 
 ### 8.1 Estratégia
 
@@ -251,10 +279,21 @@ Os fluxogramas estão em `entregas/entrega-3/`:
 - Saída de produtos: `fluxograma-saida.png`
 - Relatório de estoque baixo: `fluxograma-estoque-baixo.png`
 
-![Fluxograma geral](../entregas/entrega-3/fluxograma.png)
-![Fluxograma da saída](../entregas/entrega-3/fluxograma-saida.png)
+<p class="legenda">Figura 1 – Fluxograma geral do sistema</p>
 
-## 9. Estruturas de dados utilizadas
+![Fluxograma geral do sistema](../entregas/entrega-3/fluxograma.png)
+
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
+<p class="legenda">Figura 2 – Fluxograma da saída de produtos</p>
+
+![Fluxograma da saída de produtos](../entregas/entrega-3/fluxograma-saida.png)
+
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
+## 9 Estruturas de dados utilizadas
+
+<p class="legenda">Tabela 4 – Estruturas de dados utilizadas</p>
 
 | Estrutura | Uso | Motivo da escolha |
 |---|---|---|
@@ -264,7 +303,9 @@ Os fluxogramas estão em `entregas/entrega-3/`:
 | Lista (`list`) | Vetor `produtos` entregue às funções de consulta e movimentação. | Permite percorrer sequencialmente (busca, listagem, relatório), como no pseudocódigo. |
 | Arquivo CSV | Armazenamento permanente. | Simples, legível e suficiente para o volume do projeto. |
 
-## 10. Organização do programa e POO
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
+## 10 Organização do programa e POO
 
 ```
 src/
@@ -278,11 +319,15 @@ dados/produtos.csv   # base de dados
 
 **Classes → Objetos → Atributos → Métodos → Relacionamentos**
 
+<p class="legenda">Tabela 5 – Classes, atributos e métodos</p>
+
 | Classe | Objetos | Atributos | Métodos principais |
 |---|---|---|---|
 | `Produto` | Um por item do estoque. | `codigo_produto`, `nome_produto`, `categoria_produto`, `quantidade_atual`, `quantidade_minima` | (dataclass) |
 | `ArmazenamentoCSV` | Um por execução. | `caminho`, `__produtos` (privado) | `carregar`, `salvar`, `buscar`, `adicionar`, `remover`, propriedade `produtos` |
 | `Estoque` | Um por execução. | `__armazenamento` (privado) | `carregar_produtos`, `cadastrar_produto`, `remover_produto`, `registrar_entrada`, `registrar_saida`, propriedade `produtos` |
+
+<p class="fonte">Fonte: elaborada pelos autores.</p>
 
 **Relacionamentos:** `Estoque` **usa** (composição) um `ArmazenamentoCSV`, que **contém** vários objetos `Produto`. As funções de `consultas.py` recebem a lista de `Produto`.
 
@@ -292,7 +337,9 @@ dados/produtos.csv   # base de dados
 - **Abstração:** `Estoque` esconde os detalhes de persistência, que ficam em `ArmazenamentoCSV`.
 - **Herança e polimorfismo:** não utilizados, pois o domínio é simples e não possui hierarquia de tipos.
 
-## 11. Tecnologias utilizadas
+## 11 Tecnologias utilizadas
+
+<p class="legenda">Tabela 6 – Tecnologias utilizadas</p>
 
 | Tecnologia | Finalidade |
 |---|---|
@@ -305,9 +352,11 @@ dados/produtos.csv   # base de dados
 | Git e GitHub | Controle de versão e trabalho colaborativo. |
 | Markdown | Documentação das entregas. |
 
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
 Não foram utilizados SGBD nem bibliotecas externas.
 
-## 12. Implementação
+## 12 Implementação
 
 O pseudocódigo foi traduzido quase diretamente para métodos e funções Python.
 
@@ -345,7 +394,7 @@ else:
 
 Para executar: `python3 src/main.py`.
 
-## 13. Persistência e armazenamento de dados
+## 13 Persistência e armazenamento de dados
 
 Os dados são armazenados em `dados/produtos.csv`, com separador `;`, codificação UTF-8, cabeçalho e uma linha por produto:
 
@@ -361,7 +410,9 @@ codigo_produto;nome_produto;categoria_produto;quantidade_atual;quantidade_minima
 
 Não há banco de dados, SGBD, tabelas nem operações SQL. O CSV foi escolhido pela simplicidade e pelo volume reduzido de dados.
 
-## 14. Tratamento de erros e exceções
+## 14 Tratamento de erros e exceções
+
+<p class="legenda">Tabela 7 – Tratamento de erros e exceções</p>
 
 | Situação | Tratamento |
 |---|---|
@@ -378,11 +429,15 @@ Não há banco de dados, SGBD, tabelas nem operações SQL. O CSV foi escolhido 
 | Arquivo CSV inexistente | Início com estoque vazio. |
 | Código duplicado dentro do CSV | `ValueError` com a mensagem "Código duplicado no CSV". |
 
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
 Em todos os casos, a operação inválida não altera o estoque nem regrava o arquivo.
 
-## 15. Testes realizados
+## 15 Testes realizados
 
 Os testes foram executados no programa (`python3 src/main.py`) sobre uma cópia do `dados/produtos.csv` com os produtos 101 a 106, com as entradas passadas em sequência pela entrada padrão. As saídas abaixo foram capturadas dessas execuções.
+
+<p class="legenda">Tabela 8 – Testes realizados</p>
 
 | Teste | Cenário | Entrada | Resultado esperado | Resultado obtido | Situação |
 |---|---|---|---|---|---|
@@ -399,7 +454,9 @@ Os testes foram executados no programa (`python3 src/main.py`) sobre uma cópia 
 | 11 | **Excepcional:** nome vazio | Opção 1; código 202; nome vazio | "Nome do produto inválido" | "Nome do produto inválido" | Aprovado |
 | 12 | **Excepcional:** produto inexistente | Opção 6; tipo 1; código 999 | "Produto não encontrado" | "Produto não encontrado" | Aprovado |
 
-## 16. Resultados e análise
+<p class="fonte">Fonte: elaborada pelos autores.</p>
+
+## 16 Resultados e análise
 
 **Saída do programa (entrada e saída de produto):**
 
@@ -445,7 +502,7 @@ codigo_produto;nome_produto;categoria_produto;quantidade_atual;quantidade_minima
 
 **Análise:** os 12 testes apresentaram o resultado esperado. O estoque nunca ficou negativo, as entradas e saídas atualizaram corretamente as quantidades, o alerta identificou os produtos abaixo do mínimo e os dados foram mantidos no CSV. Assim, o problema inicial (controle de produtos e movimentações com prevenção de inconsistências) foi resolvido no escopo proposto.
 
-## 17. Limitações
+## 17 Limitações
 
 - Interface apenas em terminal, sem interface gráfica.
 - Sem histórico das movimentações: só a quantidade atual é guardada, sem data, usuário ou tipo.
@@ -458,7 +515,7 @@ codigo_produto;nome_produto;categoria_produto;quantidade_atual;quantidade_minima
 - Não há edição de produto (nome, categoria ou mínimo) depois do cadastro, apenas remoção e novo cadastro.
 - Não há testes automatizados; os testes foram manuais.
 
-## 18. Possíveis melhorias
+## 18 Possíveis melhorias
 
 - Interface gráfica ou web.
 - Registro de histórico de movimentações (data, hora, tipo, responsável) e relatório por período.
@@ -470,19 +527,30 @@ codigo_produto;nome_produto;categoria_produto;quantidade_atual;quantidade_minima
 - Exportação de relatórios (PDF ou Excel) e alertas automáticos de reposição.
 - Remoção do limite fixo de produtos.
 
-## 19. Conclusão
+## 19 Conclusão
 
 O projeto abordou o controle manual e sujeito a erros do estoque, com o objetivo de construir um sistema que cadastra, consulta e atualiza as quantidades de produtos. A solução foi planejada em etapas (definição do problema, modelagem, algoritmo com pseudocódigo e fluxogramas) e implementada em Python, com POO, persistência em CSV e validações que impedem dados inconsistentes e estoque negativo.
 
 Os testes mostraram que os objetivos específicos foram alcançados: cadastro, consulta, entradas, saídas, bloqueio de saídas inválidas, alerta de estoque baixo e persistência. Durante o desenvolvimento foram aplicados os conceitos da disciplina: variáveis e tipos de dados, estruturas sequenciais, condicionais e de repetição, listas e dicionários, modularização, manipulação de arquivos, tratamento de exceções e orientação a objetos (classes, encapsulamento e abstração). Com isso, o sistema atende ao escopo proposto e pode evoluir com as melhorias indicadas.
 
-## 20. Referências
+## 20 Referências
 
-- PYTHON SOFTWARE FOUNDATION. *The Python Tutorial*. Disponível em: <https://docs.python.org/3/tutorial/>. Acesso em: 26 nov. 2026.
-- PYTHON SOFTWARE FOUNDATION. *csv — CSV File Reading and Writing*. Disponível em: <https://docs.python.org/3/library/csv.html>. Acesso em: 26 nov. 2026.
-- PYTHON SOFTWARE FOUNDATION. *dataclasses — Data Classes*. Disponível em: <https://docs.python.org/3/library/dataclasses.html>. Acesso em: 26 nov. 2026.
-- PYTHON SOFTWARE FOUNDATION. *pathlib — Object-oriented filesystem paths*. Disponível em: <https://docs.python.org/3/library/pathlib.html>. Acesso em: 26 nov. 2026.
-- PYTHON SOFTWARE FOUNDATION. *The match statement (PEP 634)*. Disponível em: <https://peps.python.org/pep-0634/>. Acesso em: 26 nov. 2026.
-- FORBELLONE, A. L. V.; EBERSPÄCHER, H. F. *Lógica de Programação: a construção de algoritmos e estruturas de dados*. 3. ed. São Paulo: Pearson Prentice Hall, 2005.
-- Material da disciplina Algoritmo e Programação 2026.2, UNIFACS.
-- Documentos do projeto: `docs/entrega-1-definicao-do-problema.md`, `docs/entrega-2-modelagem-da-solucao.md`, `docs/entrega-3-divisao-de-tarefas.md` e `entregas/entrega-3/`.
+<div class="referencias">
+
+PYTHON SOFTWARE FOUNDATION. *The Python Tutorial*. Disponível em: <https://docs.python.org/3/tutorial/>. Acesso em: 26 nov. 2026.
+
+PYTHON SOFTWARE FOUNDATION. *csv — CSV File Reading and Writing*. Disponível em: <https://docs.python.org/3/library/csv.html>. Acesso em: 26 nov. 2026.
+
+PYTHON SOFTWARE FOUNDATION. *dataclasses — Data Classes*. Disponível em: <https://docs.python.org/3/library/dataclasses.html>. Acesso em: 26 nov. 2026.
+
+PYTHON SOFTWARE FOUNDATION. *pathlib — Object-oriented filesystem paths*. Disponível em: <https://docs.python.org/3/library/pathlib.html>. Acesso em: 26 nov. 2026.
+
+PYTHON SOFTWARE FOUNDATION. *The match statement (PEP 634)*. Disponível em: <https://peps.python.org/pep-0634/>. Acesso em: 26 nov. 2026.
+
+FORBELLONE, A. L. V.; EBERSPÄCHER, H. F. *Lógica de Programação: a construção de algoritmos e estruturas de dados*. 3. ed. São Paulo: Pearson Prentice Hall, 2005.
+
+UNIVERSIDADE SALVADOR. *Material da disciplina Algoritmo e Programação 2026.2*. Salvador, 2026.
+
+Documentos do projeto: `entregas/entrega-1/entrega-1-definicao-do-problema.md`, `entregas/entrega-2/entrega-2-modelagem-da-solucao.md`, `entregas/entrega-3/entrega-3-divisao-de-tarefas.md` e `entregas/entrega-3/`.
+
+</div>
